@@ -1,0 +1,97 @@
+import { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { login, clearError } from "../redux/slices/authSlice";
+import { motion } from "framer-motion";
+import toast from "react-hot-toast";
+import { FiMail, FiLock, FiBookOpen, FiEye, FiEyeOff } from "react-icons/fi";
+
+export default function Login() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { loading, error, user } = useSelector((s) => s.auth);
+  const [form, setForm] = useState({ email: "", password: "" });
+  const [showPass, setShowPass] = useState(false);
+
+  useEffect(() => {
+    if (user) {
+      const path = user.role === "admin" ? "/admin" : user.role === "instructor" ? "/instructor" : "/student";
+      navigate(path);
+    }
+  }, [user, navigate]);
+
+  useEffect(() => { if (error) { toast.error(error); dispatch(clearError()); } }, [error, dispatch]);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    dispatch(login(form));
+  };
+
+  const fillDemo = (role) => {
+    const demos = {
+      admin: { email: "admin@lms.com", password: "admin123" },
+      instructor: { email: "john@lms.com", password: "instr123" },
+      student: { email: "jane@lms.com", password: "student123" },
+    };
+    setForm(demos[role]);
+  };
+
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-purple-50 dark:from-gray-950 dark:to-gray-900 px-4">
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="w-full max-w-md">
+        <div className="card p-8">
+          <div className="text-center mb-8">
+            <Link to="/" className="inline-flex items-center gap-2 text-blue-600 font-bold text-2xl mb-4">
+              <FiBookOpen className="text-3xl" /> LearnHub
+            </Link>
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Welcome back</h1>
+            <p className="text-gray-500 dark:text-gray-400 mt-1">Sign in to continue learning</p>
+          </div>
+
+          {/* Demo buttons */}
+          <div className="flex gap-2 mb-6">
+            {["admin", "instructor", "student"].map((r) => (
+              <button key={r} onClick={() => fillDemo(r)} className="flex-1 text-xs py-2 px-2 rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-blue-50 dark:hover:bg-blue-900/20 text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-all capitalize font-medium">
+                {r}
+              </button>
+            ))}
+          </div>
+
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Email</label>
+              <div className="relative">
+                <FiMail className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
+                <input type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })}
+                  className="input pl-10" placeholder="you@example.com" required />
+              </div>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Password</label>
+              <div className="relative">
+                <FiLock className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
+                <input type={showPass ? "text" : "password"} value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })}
+                  className="input pl-10 pr-10" placeholder="••••••••" required />
+                <button type="button" onClick={() => setShowPass(!showPass)} className="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
+                  {showPass ? <FiEyeOff /> : <FiEye />}
+                </button>
+              </div>
+            </div>
+            <button type="submit" disabled={loading} className="btn-primary w-full mt-2 flex items-center justify-center gap-2">
+              {loading ? <span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" /> : "Sign In"}
+            </button>
+          </form>
+
+          <p className="text-center text-sm text-gray-500 dark:text-gray-400 mt-6">
+            Don't have an account?{" "}
+            <Link to="/register" className="text-blue-600 dark:text-blue-400 font-semibold hover:underline">Sign up</Link>
+          </p>
+          <p className="text-center text-xs text-gray-400 dark:text-gray-600 mt-2">
+            Admin?{" "}
+            <Link to="/register-admin" className="text-red-500 dark:text-red-400 font-semibold hover:underline">Admin signup</Link>
+          </p>
+        </div>
+      </motion.div>
+    </div>
+  );
+}
