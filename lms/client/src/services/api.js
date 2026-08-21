@@ -1,6 +1,8 @@
 import axios from "axios";
 
-const API = axios.create({ baseURL: "http://localhost:5000/api" });
+const API = axios.create({
+  baseURL: "https://online-learning-management-system-1-i2ks.onrender.com/api",
+});
 
 // Attach token to every request
 API.interceptors.request.use((config) => {
