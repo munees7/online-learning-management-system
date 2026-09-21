@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "https://online-learning-management-system-1-i2ks.onrender.com/api",
+  baseURL: "https://learnhub-p763.onrender.com/api",
 });
 
 // Attach token to every request
