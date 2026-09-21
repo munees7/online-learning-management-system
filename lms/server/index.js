@@ -1,8 +1,10 @@
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
+const passport = require("passport");
 const connectDB = require("./config/db");
 const errorHandler = require("./middleware/error");
+require("./config/passport"); // initialize Google strategy
 
 const app = express();
 connectDB();
@@ -10,6 +12,7 @@ connectDB();
 app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(passport.initialize());
 
 // Routes
 app.use("/api/auth", require("./routes/auth"));

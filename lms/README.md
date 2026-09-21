@@ -50,3 +50,12 @@ Open: http://localhost:5173
 - Admin: analytics dashboard, manage users & courses
 - Dark/Light mode
 - Stripe payment (demo mode if key not set)
+
+server
+cd "C:\Users\Lenovo\Desktop\online learning management system\lms\server"
+npm run dev
+
+
+client
+cd "C:\Users\Lenovo\Desktop\online learning management system\lms\client"
+npm run dev

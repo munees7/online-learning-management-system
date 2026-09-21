@@ -14,6 +14,7 @@ import AdminRegister from "./pages/AdminRegister";
 import Courses from "./pages/Courses";
 import CourseDetail from "./pages/CourseDetail";
 import LearnPage from "./pages/LearnPage";
+import GoogleAuthSuccess from "./pages/GoogleAuthSuccess";
 
 // Student
 import StudentDashboard from "./pages/student/StudentDashboard";
@@ -54,6 +55,8 @@ function App() {
         <Route path="/courses" element={<Courses />} />
         <Route path="/courses/:id" element={<CourseDetail />} />
         <Route path="/learn/:id" element={<ProtectedRoute><LearnPage /></ProtectedRoute>} />
+        {/* Google OAuth callback landing page */}
+        <Route path="/auth/google/success" element={<GoogleAuthSuccess />} />
 
         {/* Student */}
         <Route path="/student" element={<ProtectedRoute roles={["student"]}><DashboardLayout /></ProtectedRoute>}>

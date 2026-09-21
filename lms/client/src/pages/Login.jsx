@@ -5,6 +5,7 @@ import { login, clearError } from "../redux/slices/authSlice";
 import { motion } from "framer-motion";
 import toast from "react-hot-toast";
 import { FiMail, FiLock, FiBookOpen, FiEye, FiEyeOff } from "react-icons/fi";
+import { FcGoogle } from "react-icons/fc";
 
 export default function Login() {
   const dispatch = useDispatch();
@@ -81,6 +82,22 @@ export default function Login() {
               {loading ? <span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" /> : "Sign In"}
             </button>
           </form>
+
+          {/* Divider */}
+          <div className="flex items-center gap-3 my-5">
+            <div className="flex-1 h-px bg-gray-200 dark:bg-gray-700" />
+            <span className="text-xs text-gray-400 dark:text-gray-500">or</span>
+            <div className="flex-1 h-px bg-gray-200 dark:bg-gray-700" />
+          </div>
+
+          {/* Google OAuth button — redirects to backend which handles the OAuth flow */}
+          <a
+            href="http://localhost:5000/api/auth/google"
+            className="w-full flex items-center justify-center gap-3 py-2.5 px-4 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 font-medium text-sm transition-all"
+          >
+            <FcGoogle className="text-xl flex-shrink-0" />
+            Continue with Google
+          </a>
 
           <p className="text-center text-sm text-gray-500 dark:text-gray-400 mt-6">
             Don't have an account?{" "}
